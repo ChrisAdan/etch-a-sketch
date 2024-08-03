@@ -1,0 +1,36 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header {
+  width: 100vw;
+  height: auto;
+  padding: 12px;
+  border-bottom: 1px solid black;
+}
+
+footer {
+  width: 100vw;
+  height: auto;
+  padding: 12px;
+  border-top: 1px solid black;
+}
+
+section {
+  width: 100vw;
+  height: auto;
+  border: 1px solid blue;
+}
