@@ -65,7 +65,7 @@ section.controls {
 }
 .pixel {
   transition: all 0.1s;
-  border: 0.1px solid black;
+  /* border: 0.1px solid black; */
 }
 
 .filled {
