@@ -1,26 +1,32 @@
 const DEFAULT_GRID_SIZE = 30;
 const SHADE_FACTOR = 4;
 const BASE_OPACITY = 0.1;
+const DEFAULT_PIXEL_FILL = "#000000";
+const DEFAULT_PIXEL_EMPTY = "#FFFFFF";
 let selectedGridSize;
+let selectedTrailColor;
+let activeDrag = false;
 
 // On mouseenter, set pixel class to black fill and increase opacity towards 1
 const fillPixel = (event) => {
-  if (event.target.classList.contains("filled")) {
-    const opacityModifier = (1 - BASE_OPACITY) / SHADE_FACTOR;
-    event.target.style.opacity = Math.min(
-      +event.target.style.opacity + opacityModifier,
-      1
-    );
-  } else {
-    event.target.classList.add("filled");
-    event.target.style.opacity = BASE_OPACITY;
+  if (activeDrag) {
+    event.target.style.background = selectedTrailColor || DEFAULT_PIXEL_FILL;
+    if (event.target.filled) {
+      const opacityModifier = (1 - BASE_OPACITY) / SHADE_FACTOR;
+      event.target.style.opacity = Math.min(
+        +event.target.style.opacity + opacityModifier,
+        1
+      );
+    } else {
+      event.target.filled = true;
+      event.target.style.opacity = BASE_OPACITY;
+    }
   }
 };
 
 const clearPixel = (pixel) => {
-  console.log(pixel.classList);
-  console.log(pixel);
-  pixel.classList.remove("filled");
+  pixel.filled = false;
+  pixel.style.background = DEFAULT_PIXEL_EMPTY;
 };
 
 // Construct and evenly distribute pixels on canvas
@@ -32,6 +38,7 @@ const createCanvas = (size) => {
     const dimension = gridPercentage(size) + "%";
     gridItem.style.height = dimension;
     gridItem.style.width = dimension;
+    gridItem.style.background = DEFAULT_PIXEL_EMPTY;
     gridItem.setAttribute("data-idx", `pixel-${i}`);
     gridItem.setAttribute("class", "pixel");
     gridItem.addEventListener("mouseenter", fillPixel);
@@ -45,9 +52,18 @@ const canvasContainer = createCanvas(selectedGridSize || DEFAULT_GRID_SIZE);
 // Functionality
 
 const clearGrid = () => {
-  console.log("cleargrid");
   Array.from(canvasContainer.children).forEach(clearPixel);
 };
 
 const resetButton = document.querySelector(".reset-button");
 resetButton.addEventListener("click", clearGrid);
+
+const setTrailColor = (event) => {
+  selectedTrailColor = event.target.value;
+};
+
+const selectColor = document.querySelector(".select-color");
+selectColor.addEventListener("input", setTrailColor);
+
+canvasContainer.addEventListener("mousedown", () => (activeDrag = true));
+canvasContainer.addEventListener("mouseup", () => (activeDrag = false));

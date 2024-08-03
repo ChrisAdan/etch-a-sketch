@@ -10,6 +10,10 @@ ul {
   list-style: none;
 }
 
+input {
+  display: block;
+}
+
 body {
   height: 100vh;
   width: auto;
