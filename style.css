@@ -6,6 +6,10 @@
   box-sizing: border-box;
 }
 
+ul {
+  list-style: none;
+}
+
 body {
   height: 100vh;
   width: auto;
@@ -22,6 +26,11 @@ header {
   border-bottom: 1px solid black;
 }
 
+nav {
+  display: flex;
+  justify-content: space-between;
+}
+
 footer {
   width: 100vw;
   height: auto;
@@ -32,7 +41,7 @@ footer {
 section {
   width: 100vw;
   height: auto;
-  border: 1px solid blue;
+  border: 1px solid black;
 }
 
 section.canvas {
@@ -44,9 +53,21 @@ section.controls {
 }
 
 .canvas-container {
-  border: 1px solid red;
+  border: 1px solid black;
   height: 100%;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+}
+
+.canvas-container:hover {
+  cursor: pointer;
+}
+.pixel {
+  transition: all 0.1s;
+  border: 0.1px solid black;
+}
+
+.filled {
+  background: black;
 }
