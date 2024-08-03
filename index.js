@@ -9,6 +9,7 @@ for (let i = 0; i < GRID_SIZE; i++) {
   gridItem.style.height = dimension;
   gridItem.style.width = dimension;
   gridItem.setAttribute("data-idx", `pixel-${i}`);
+  gridItem.setAttribute("class", "pixel");
   gridItem.textContent = gridItem.getAttribute("data-idx");
   console.log(gridItem);
   gridItem.style.border = "1px solid green";
