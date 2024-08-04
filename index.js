@@ -70,24 +70,28 @@ const clearGrid = () => {
   Array.from(canvasContainer.children).forEach(clearPixel);
 };
 
-const resetButton = document.querySelector(".reset-button");
-resetButton.addEventListener("click", clearGrid);
-
 const setTrailColor = (event) => {
   selectedTrailColor = event.target.value;
 };
 
-const selectColor = document.querySelector(".select-color");
-selectColor.addEventListener("input", setTrailColor);
-
-// window.addEventListener("mousedown", () => (activeDrag = true));
-// window.addEventListener("mouseup", () => (activeDrag = false));
-
-const gridSizeInput = document.querySelector(".select-size");
-gridSizeInput.addEventListener("input", (event) => {
+const generateNewGrid = (event) => {
   const output = document.querySelector(".current-size");
   selectedGridSize = event.target.value;
   output.textContent = selectedGridSize;
   clearGrid();
   canvasContainer = createCanvas(selectedGridSize);
-});
+};
+
+// Controls
+const resetButton = document.querySelector(".reset-button");
+resetButton.addEventListener("click", clearGrid);
+
+const selectColor = document.querySelector(".select-color");
+selectColor.addEventListener("input", setTrailColor);
+
+const gridSizeInput = document.querySelector(".select-size");
+gridSizeInput.addEventListener("input", generateNewGrid);
+
+// Maybe will add click to drag back in
+// window.addEventListener("mousedown", () => (activeDrag = true));
+// window.addEventListener("mouseup", () => (activeDrag = false));
