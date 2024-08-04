@@ -7,6 +7,7 @@ let selectedGridSize;
 let selectedTrailColor;
 let activeDrag = true;
 let canvasContainer;
+let currentCanvasSize = DEFAULT_GRID_SIZE;
 
 function initialize() {
   const gridSizeInput = document.querySelector(".select-size");
@@ -14,6 +15,7 @@ function initialize() {
   const sizeDisplay = document.querySelector(".current-size");
   sizeDisplay.textContent = gridSizeInput.value;
   canvasContainer = createCanvas(DEFAULT_GRID_SIZE);
+  currentCanvasSize = canvasContainer.children.length;
 }
 
 window.addEventListener("DOMContentLoaded", initialize);
@@ -44,7 +46,11 @@ const clearPixel = (pixel) => {
 const createCanvas = (size) => {
   const container = document.querySelector(".canvas-container");
   let gridPercentage = (rows) => 100 / rows;
-  for (let i = 0; i < size ** 2; i++) {
+  const newCanvasSize = size ** 2;
+  Array.from(container.children).forEach((child) => {
+    container.removeChild(child);
+  });
+  for (let i = 0; i < newCanvasSize; i++) {
     const gridItem = document.createElement("div");
     const dimension = gridPercentage(size) + "%";
     gridItem.style.height = dimension;
@@ -80,5 +86,8 @@ selectColor.addEventListener("input", setTrailColor);
 const gridSizeInput = document.querySelector(".select-size");
 gridSizeInput.addEventListener("input", (event) => {
   const output = document.querySelector(".current-size");
-  output.textContent = event.target.value;
+  selectedGridSize = event.target.value;
+  output.textContent = selectedGridSize;
+  clearGrid();
+  canvasContainer = createCanvas(selectedGridSize);
 });
