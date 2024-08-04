@@ -91,7 +91,6 @@ section.controls {
 }
 
 .canvas-container {
-  /* border: 2px solid #b76d68; */
   border-radius: 12px;
   overflow: hidden;
   height: 100%;
