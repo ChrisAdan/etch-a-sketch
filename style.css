@@ -49,11 +49,14 @@ section {
 }
 
 section.canvas {
-  flex-grow: 2;
+  flex-grow: 3;
   padding: 64px;
 }
 section.controls {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .canvas-container {
@@ -69,9 +72,10 @@ section.controls {
 }
 .pixel {
   transition: all 0.1s;
-  /* border: 0.1px solid black; */
 }
 
-.filled {
-  background: black;
+.controls-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }

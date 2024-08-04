@@ -5,7 +5,18 @@ const DEFAULT_PIXEL_FILL = "#000000";
 const DEFAULT_PIXEL_EMPTY = "#FFFFFF";
 let selectedGridSize;
 let selectedTrailColor;
-let activeDrag = false;
+let activeDrag = true;
+let canvasContainer;
+
+function initialize() {
+  const gridSizeInput = document.querySelector(".select-size");
+  gridSizeInput.value = DEFAULT_GRID_SIZE;
+  const sizeDisplay = document.querySelector(".current-size");
+  sizeDisplay.textContent = gridSizeInput.value;
+  canvasContainer = createCanvas(DEFAULT_GRID_SIZE);
+}
+
+window.addEventListener("DOMContentLoaded", initialize);
 
 // On mouseenter, set pixel class to black fill and increase opacity towards 1
 const fillPixel = (event) => {
@@ -47,8 +58,6 @@ const createCanvas = (size) => {
   return container;
 };
 
-const canvasContainer = createCanvas(selectedGridSize || DEFAULT_GRID_SIZE);
-
 // Functionality
 
 const clearGrid = () => {
@@ -65,5 +74,11 @@ const setTrailColor = (event) => {
 const selectColor = document.querySelector(".select-color");
 selectColor.addEventListener("input", setTrailColor);
 
-canvasContainer.addEventListener("mousedown", () => (activeDrag = true));
-canvasContainer.addEventListener("mouseup", () => (activeDrag = false));
+// window.addEventListener("mousedown", () => (activeDrag = true));
+// window.addEventListener("mouseup", () => (activeDrag = false));
+
+const gridSizeInput = document.querySelector(".select-size");
+gridSizeInput.addEventListener("input", (event) => {
+  const output = document.querySelector(".current-size");
+  output.textContent = event.target.value;
+});
