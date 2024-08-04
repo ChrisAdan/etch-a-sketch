@@ -1,8 +1,8 @@
 const DEFAULT_GRID_SIZE = 30;
 const SHADE_FACTOR = 4;
 const BASE_OPACITY = 0.1;
-const DEFAULT_PIXEL_FILL = "#000000";
-const DEFAULT_PIXEL_EMPTY = "#FFFFFF";
+const DEFAULT_PIXEL_FILL = "#A11B55";
+const DEFAULT_PIXEL_EMPTY = "#121420"; //Rich Black
 const RGB_MAX = 255;
 let selectedTrailColor;
 let activeDrag = true;
@@ -41,6 +41,7 @@ const fillPixel = (event) => {
 const clearPixel = (pixel) => {
   pixel.filled = false;
   pixel.style.background = DEFAULT_PIXEL_EMPTY;
+  pixel.style.opacity = BASE_OPACITY;
 };
 
 // Construct and evenly distribute pixels on canvas
