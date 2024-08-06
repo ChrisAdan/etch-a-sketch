@@ -1,39 +1,74 @@
-const DEFAULT_GRID_SIZE = 30;
 const SHADE_FACTOR = 4;
 const BASE_OPACITY = 0.1;
 const DEFAULT_PIXEL_FILL = "#A11B55";
 const DEFAULT_PIXEL_EMPTY = "#121420"; //Rich Black
 const RGB_MAX = 255;
+let defaultGridSize;
 let selectedTrailColor;
 let activeDrag = true;
 let canvasContainer;
-let currentCanvasSize = DEFAULT_GRID_SIZE;
-let selectedGridSize = currentCanvasSize;
-
-function initialize() {
-  const gridSizeInput = document.querySelector(".select-size");
-  gridSizeInput.value = DEFAULT_GRID_SIZE;
-  const sizeDisplay = document.querySelector(".current-size");
-  sizeDisplay.textContent = gridSizeInput.value;
-  canvasContainer = createCanvas(DEFAULT_GRID_SIZE);
-  currentCanvasSize = canvasContainer.children.length;
-}
+let currentCanvasSize = defaultGridSize;
+let selectedGridSize;
 
 window.addEventListener("DOMContentLoaded", initialize);
 
+function initialize() {
+  const initialScreenSize = window.innerWidth;
+  defaultGridSize = initialScreenSize <= 768 ? 15 : 30;
+  const gridSizeInput = document.querySelector(".select-size");
+  gridSizeInput.value = defaultGridSize;
+  selectedGridSize = defaultGridSize;
+  const sizeDisplay = document.querySelector(".current-size");
+  sizeDisplay.textContent = gridSizeInput.value;
+  canvasContainer = createCanvas(defaultGridSize);
+  currentCanvasSize = canvasContainer.children.length;
+  // Feels too laggy with 100x100 on phone screen
+  const rangeInput = document.querySelector(".select-size");
+  if (window.innerWidth <= 768) {
+    rangeInput.setAttribute("max", "40");
+  } else {
+    rangeInput.setAttribute("max", "100");
+  }
+}
+
+const initTouchStart = (event) => {
+  event.preventDefault();
+};
+const initTouchEnd = (event) => {
+  event.preventDefault();
+};
+
+const initTouchMove = (event) => {
+  event.preventDefault();
+};
+
+function getTouchTarget(event) {
+  let currentX = event.changedTouches[0].clientX;
+  let currentY = event.changedTouches[0].clientY;
+  const element = document.elementFromPoint(currentX, currentY);
+  element.X = currentX;
+  element.Y = currentY;
+  return element;
+}
+
 // On mouseenter, set pixel class to black fill and increase opacity towards 1
 const fillPixel = (event) => {
-  if (activeDrag) {
-    event.target.style.background = selectedTrailColor || DEFAULT_PIXEL_FILL;
-    if (event.target.filled) {
+  const touchBoundaries = event.target.parentElement.getBoundingClientRect();
+  const target =
+    event instanceof TouchEvent ? getTouchTarget(event) : event.target;
+  if (event instanceof TouchEvent && !target.classList.contains("pixel")) {
+    return;
+  } else {
+    target.style.background = selectedTrailColor || DEFAULT_PIXEL_FILL;
+    if (target.filled) {
       const opacityModifier = (1 - BASE_OPACITY) / SHADE_FACTOR;
-      event.target.style.opacity = Math.min(
-        +event.target.style.opacity + opacityModifier,
+      target.style.opacity = Math.min(
+        +target.style.opacity + opacityModifier,
         1
       );
     } else {
-      event.target.filled = true;
-      event.target.style.opacity = BASE_OPACITY;
+      target.filled = true;
+      target.style.opacity = BASE_OPACITY;
     }
   }
 };
@@ -70,6 +105,10 @@ const createCanvas = (size, randomize = false) => {
     gridItem.setAttribute("data-idx", `pixel-${i}`);
     gridItem.setAttribute("class", "pixel");
     gridItem.addEventListener("mouseenter", fillPixel);
+    gridItem.addEventListener("touchstart", initTouchStart);
+    gridItem.addEventListener("touchend", initTouchEnd);
+    gridItem.addEventListener("touchmove", initTouchMove);
+    gridItem.addEventListener("touchmove", fillPixel);
     container.appendChild(gridItem);
   }
   return container;
@@ -109,7 +148,3 @@ gridSizeInput.addEventListener("input", generateNewGrid);
 
 const randomizeButton = document.querySelector(".randomize-button");
 randomizeButton.addEventListener("click", randomizeGrid);
-
-// Maybe will add click to drag back in
-// window.addEventListener("mousedown", () => (activeDrag = true));
-// window.addEventListener("mouseup", () => (activeDrag = false));

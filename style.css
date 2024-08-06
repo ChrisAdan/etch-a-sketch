@@ -97,6 +97,7 @@ section.controls {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  /* border: 1px solid white; */
 }
 
 .canvas-container:hover,
